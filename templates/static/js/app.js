@@ -13,13 +13,14 @@ MongoClient.connect(mongoUrl, function(err, db) {
 
 //------------------------------------------------------
 // Display Table
-var tbody = d3.select("tbody");
-result.forEach((data) => {
-  var row = tbody.append("tr");
-  Object.entries(data).forEach(([key, value]) => {
-    var cell = tbody.append("td");
-    cell.text(value);
-  });
+d3.select("tbody")
+.selectAll("tr")
+.data(jobs)
+.enter()
+.append("tr")
+.html(function(d) {
+  return `<td>${d.Title}</td><td>${d.Company}</td><td>${d.City}</td>
+  <td>${d.State}</td><td>${d.Designation}</td>`;
 });
 
 //-------------------------------------------------------
