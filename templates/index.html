@@ -22,8 +22,7 @@
             <div class="col-md-12">
                 <table class="table table-striped" id ="mytable">
                     <thead>
-                        <tr><th>Title</th><th>Company</th><th>City</th>
-                          <th>State</th><th>Designation</th></tr>
+                        
                     </thead>
                     <tbody></tbody>
                 </table>
@@ -41,16 +40,15 @@
         {% endfor %}
       </ul> -->
     </div>
-      <form class="form-inline" method="POST" action="/send">
+      <!-- <form class="form-inline" method="POST" action="/send"> -->
     <div class="form-group">
       <label for="stockInput">Select Company</label>
       <input type="text" class="form-control" id="companyInput" name="company" placeholder="Enter Company name">
     </div>
-    <button id="submit" type="submit" class="btn btn-default">Search Company</button>
+    <button id="filter-btn" type="submit" class="btn btn-primary btn-md">Search Company</button>
   </form>
   <div id="plot"></div>
   <div id="map"></div>
-  </div>
   <!-- D3 JavaScript -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.js"></script>
   <!-- Plotly JavaScript -->
@@ -62,7 +60,7 @@
   <script type="text/javascript" src="static/js/table.js"></script>
   
   <!-- Javascript -->
-  <script src="static/js/app.js"></script>
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 </body>
 
 </html>
