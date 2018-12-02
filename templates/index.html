@@ -15,25 +15,11 @@
 </head>
 
 <body>
-  <div class="container text-center">
-    <h1 class="jumbotron">Job Listings</h1>
-    <div>
-      <ul style="list-style: none;">
-        {% for job in jobs %}
-          <li>{{ job.Company }} - {{ job.Title }}: {{ job.City }}, {{ job.State }}</li>
-        {% endfor %}
-      </ul>
-    </div>
-      <form class="form-inline" method="POST" action="/send">
-    <div class="form-group">
-      <label for="stockInput">Select Company</label>
-      <input type="text" class="form-control" id="companyInput" name="company" placeholder="Enter Company name">
-    </div>
-    <button id="submit" type="submit" class="btn btn-default">Jobs for Company</button>
-  </form>
+  <div class="col-md-12 jumbotron text-center">
+    <h1> Placeholder text</h1>
+    <div id="sample-metadata" class="panel-body"></div>
   <div id="plot"></div>
   <div id="map"></div>
-  </div>
   <!-- D3 JavaScript -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.js"></script>
   <!-- Plotly JavaScript -->
@@ -44,7 +30,7 @@
   <script type="text/javascript" src="static/js/config.js"></script>
 
   <!-- Javascript -->
-  <script src="static/js/app.js"></script>
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 </body>
 
 </html>

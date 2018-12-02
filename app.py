@@ -5,6 +5,7 @@ from flask import (
     request)
 # Import pymongo library, to connect Flask app to our Mongo database.
 import pymongo
+import pandas as pd
 
 # Create an instance of Flask app.
 app = Flask(__name__)
@@ -22,22 +23,21 @@ db = client.jobs_db
 @app.route('/')
 def index():
     # Store the job listings collection in a list
-    jobs = list(db.job_listings.find())
-
     # Return the template with the jobs list passed in
-    return render_template('index.html', jobs=jobs)
+    return render_template('index.html')
 
+# Set route
+@app.route('/jobs')
+def jobs():
+    """ Return list of jobs"""
+    jobs_list = {}
+    jobs_data = list(db.job_listings.find())
+    df = pd.DataFrame(jobs_data)
+    df = df.drop(['_id'], axis=1)
+    json_data = df.to_json(orient='records')
+    # Return the jobs list (it is already in json format)
+    return json_data
 
-@app.route("/send", methods=["GET", "POST"])
-def send():
-    if request.method == "POST":
-        company = request.form["company"]
-
-        print(company)
-
-        return jsonify(company)
-
-    return render_template("index.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
