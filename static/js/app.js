@@ -1,4 +1,8 @@
 
+// import 'json-sql';
+
+
+
 function BuildTable(){
 
   d3.json("/jobs").then(function(json_data) { 
@@ -19,12 +23,24 @@ function BuildTable(){
       
       var inputElement = d3.select('#companyInput');
       
-      var inputValue = inputElement.property('value');
-      
+      var inputValue = inputElement.property('value')//.toLowerCase();
+      var regex = new RegExp(inputValue,'gi')
+      // var a = tableData.indexOf(inputValue)
+      // console.log(a)
       console.log(inputValue);
       // console.log(tableData);
+      // const regexp = new RegExp(searchStr, 'i');
+      // var filteredData = tableData.search(inputValue);
+      var filteredData = tableData.filter(job => 
+        // job.City.indexOf(inputValue) !== -1)
+        regex.test(job.Title||job.Company||job.City||job.State||job.Designation))
+        
+        
+        // || job.City === inputValue || job.Designation === inputValue
+    //  || job.State === inputValue );
       
-      var filteredData = tableData.filter(job => job.Company === inputValue);
+
+      // res = JSON.search(tableData,'//Company')
   
       console.log(filteredData);
       //in this function, data and columns are recognized
@@ -40,7 +56,8 @@ function BuildTable(){
           .data(columns)
           .enter()
           .append('th')
-          .text(function(column){return column;});
+          .text(function(column){return column;})
+          .attr('align center')
   
   
           var rows = tbody.selectAll("tr")
@@ -57,7 +74,8 @@ function BuildTable(){
           })
           .enter()
           .append("td")
-              .text(function(d) { return d.value; });
+              .text(function(d) { return d.value; })
+              .attr('align left');
       
       return table;
   
@@ -77,39 +95,37 @@ function BuildTable(){
       else{
   
       var data_ = tabulate(filteredData,
-      ['City','Company','Designation','State','Title']);
+      ['City','State','Company','Designation','Title']);
       }
   })
   })
   }
 
-
-
-function init() {
-  // Grab a reference to the dropdown select element
-  //var selector = d3.select("#selDataset");
-	// var meta = d3.select("#sample-metadata");
-	// meta.html("");
-  // Use the list of sample names to populate the select options
-  d3.json("/jobs").then(function(json_data) { 
-    console.log(json_data);
-    
-
-    
-});
-}
-
-  	// response.forEach((jobItem) => {
-    //  Object.entries(jobItem).forEach(([key, value]) => {
-    // //   selector
-    // //     .append("option")
-    // //     .text(title)
-    // //     .property("value", title);
-    // meta.append("p").text(`${key}: ${value}`);
-    // })
-    // });
-
-
-
-init();
-BuildTable();
+  function init() {
+    // Grab a reference to the dropdown select element
+    //var selector = d3.select("#selDataset");
+    // var meta = d3.select("#sample-metadata");
+    // meta.html("");
+    // Use the list of sample names to populate the select options
+    d3.json("/jobs").then(function(json_data) { 
+      console.log(json_data);
+      
+  
+      
+  });
+  }
+  
+      // response.forEach((jobItem) => {
+      //  Object.entries(jobItem).forEach(([key, value]) => {
+      // //   selector
+      // //     .append("option")
+      // //     .text(title)
+      // //     .property("value", title);
+      // meta.append("p").text(`${key}: ${value}`);
+      // })
+      // });
+  
+  
+  
+  init();
+  BuildTable();
