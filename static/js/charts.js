@@ -1,89 +1,79 @@
-   
-  // var trace1 = {
-  //     x: City.slice(0, 10),
-  //     y: Title,
-  //     type: "bar"
-  //   };
-    
-  //   // Create the data array for the plot
-  //   var data = [trace1];
-    
-  //   // Define the plot layout
-  //   var layout = {
-  //     title: "Top 10 Cities for Data Jobs",
-  //     xaxis: { title: "City" },
-  //     yaxis: { title: "Job Frequency" }
-  //   };
-    
-  //   // Plot the chart to a div tag with id "bar-plot"
-  //   Plotly.newPlot("bar-plot", data, layout);
+function buildchartdata {
+    d3.json(`/jobs`).then((data) => {
+      // Use d3 to select the panel with id of `#sample-metadata`
+      var PANEL = d3.select("#plot");
   
-
-// Build a Pie Chart for top 10 designations by number of jobs
-function buildPieChart(jobsByState) {
-
-  jobsByState = jobsByState.slice(0,10);
-
-    var trace_pie = {
-      type: "pie",
-      labels: jobsByState.map(row => row.State),
-      values: jobsByState.map(row => row.Jobs_Count),
-      hole: .4,
-      marker: {
-        //colorscale: 'Viridis',
-        line: {color: "black", width: 1}
-      }
-    };
-    var data_pie = [trace_pie];
-
-    var layout_pie = {
-    title: "States with highest number of jobs",
-    margin: {
-      t: 40,
-      b: -20
-      }  
-    };
-
-    PIE = document.getElementById("pie");
-    Plotly.newPlot(PIE, data_pie, layout_pie);
-}
-
-function buildBarChart(jobsByCompany) {
+      // Use `.html("") to clear any existing metadata
+      PANEL.html("");
+  
+      // Use `Object.entries` to add each key and value pair to the panel
+      // Hint: Inside the loop, you will need to use d3 to append new
+      // tags for each key-value in the metadata.
+      Object.entries(data).forEach(([key, value]) => {
+        PANEL.append("plot").text(`${key}: ${value}`);
+      });
     
-  jobsByCompany = jobsByCompany.slice(0,20);
-
-    // Build a Bar Chart for top 10 Companies for data jobs 
+    // Build a Pie Chart for top 10 jobs by deignation
     // need to use slice() to grab the top 10 sample_values,
-
-    var trace1 = {
-      x: jobsByCompany.map(row => row.Company),
-      y: jobsByCompany.map(row => row.Jobs_Count),
-      type: "bar"
-    };
     
-    // Create the data array for the plot
-    var data = [trace1];
-    
-    // Define the plot layout
-    var layout = {
-      title: "Companies with maximum Data Analytics Jobs postings",
-      xaxis: { title: "Company" },
-      yaxis: { title: "No. of Jobs" },
-      //orientation: "h"
-    };
-    
-    // Plot the chart to a div tag with id "bar-plot"
-    Plotly.newPlot("bar-plot", data, layout);
-}
-
-function init() {
+    var pieData = [
+        {
+          values: Designation.slice(0, 10),
+          labels: Designation.slice(0, 10),
+          hovertext: Designation.slice(0, 10),
+          hoverinfo: "hovertext",
+          type: "pie"
+        }
+      ];
   
-  d3.json("/state").then((data) => {
-    buildPieChart(data);
-  });
+      var pieLayout = {
+        margin: { t: 0, l: 0 }
+      };
+  
+      Plotly.plot("pie", pieData, pieLayout);
+    });
+  }
+  
+  // Build a Bar Chart for top 10 cities for data jobs 
+  // need to use slice() to grab the top 10 sample_values,
+  // Create the Trace
+var trace1 = {
+    x: City.slice(0, 10),
+    y: Title,
+    type: "bar"
+  };
+  
+  // Create the data array for the plot
+  var data = [trace1];
+  
+  // Define the plot layout
+  var layout = {
+    title: "Top 10 Cities for Data Jobs",
+    xaxis: { title: "City" },
+    yaxis: { title: "Job Frequency" }
+  };
+  
+  // Plot the chart to a div tag with id "bar-plot"
+  Plotly.newPlot("bar-plot", data, layout);
+  
+  // Build a Bar Chart for top 10 Companies for data jobs 
+  // need to use slice() to grab the top 10 sample_values,
 
-  d3.json("/company").then((data) => {
-    buildBarChart(data);
-  });
-}
-init();
+  var trace1 = {
+    x: Company.slice(0, 10),
+    y: Title,
+    type: "bar"
+  };
+  
+  // Create the data array for the plot
+  var data = [trace1];
+  
+  // Define the plot layout
+  var layout = {
+    title: "Top 10 Company for Data Jobs",
+    xaxis: { title: "City" },
+    yaxis: { title: "Job Frequency" }
+  };
+  
+  // Plot the chart to a div tag with id "bar-plot"
+  Plotly.newPlot("bar-plot", data, layout);

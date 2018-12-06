@@ -19,10 +19,10 @@
     <h1> Placeholder text</h1>
     <div id="sample-metadata" class="panel-body"></div>
   <div id="plot"></div>
-  <div class="col-md-5">
+  <div class="col-md-6">
       <div id="pie"></div>
   </div>
-  <div class="col-md-5">
+  <div class="col-md-6">
       <div id="bar-plot"></div>
   </div>
   <div id="map"></div>
@@ -32,10 +32,7 @@
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <!-- Leaflet JavaScript -->
   <script src="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
-  <!-- API Key for GeoJSONMap 
-  <script type="text/javascript" src="static/js/config.js"></script> -->
 
-  <!-- Javascript -->
   <script src="{{ url_for('static', filename='js/app.js') }}"></script>
   <script src="{{ url_for('static', filename='js/charts.js') }}"></script>
 </body>
