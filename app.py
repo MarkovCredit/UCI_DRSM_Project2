@@ -30,14 +30,47 @@ def index():
 @app.route('/jobs')
 def jobs():
     """ Return list of jobs"""
-    jobs_list = {}
     jobs_data = list(db.job_listings.find())
     df = pd.DataFrame(jobs_data)
     df = df.drop(['_id'], axis=1)
     json_data = df.to_json(orient='records')
-    # Return the jobs list (it is already in json format)
+    # Return the jobs list (in json format)
     return json_data
 
+# Set route for number of jobs by State
+@app.route('/state')
+def state():
+    """ Return list of jobs"""
+    jobs_data = list(db.jobs_glassdoor.find())
+    df = pd.DataFrame(jobs_data)
+    df = df.drop(['_id'], axis=1)
+    df = df.drop_duplicates(keep = 'first')
+    df = df.loc[df["City"] != 'United States']
+    
+    grp_state_df = df.groupby('State')
+    jobs_state_df = grp_state_df[["State"]].count()
+    jobs_state_df = jobs_state_df.rename(
+        columns = {"State": "Jobs_Count"}
+        ).sort_values(by='Jobs_Count', ascending=False).reset_index()
+    json_states_jobs = jobs_state_df.to_json(orient='records')
+    # Return the jobs list (in json format)
+    return json_states_jobs
+
+# Set route for number of jobs by State
+@app.route('/company')
+def company():
+    """ Return list of jobs"""
+    jobs_data = list(db.jobs_glassdoor.find())
+    df = pd.DataFrame(jobs_data)
+    df = df.drop(['_id'], axis=1)
+    df = df.drop_duplicates(keep = 'first')
+    
+    grp_company_df = df.groupby('Company')
+    jobs_company_df = grp_company_df[["Company"]].count()
+    jobs_company_df = jobs_company_df.rename(columns = {"Company": "Jobs_Count"}).sort_values(by='Jobs_Count', ascending=False).reset_index()
+    json_company_jobs = jobs_company_df.to_json(orient='records')
+    # Return the jobs list (in json format)
+    return json_company_jobs
 
 if __name__ == "__main__":
     app.run(debug=True)
