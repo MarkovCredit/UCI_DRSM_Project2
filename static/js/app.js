@@ -33,10 +33,13 @@ function BuildTable(){
       // var filteredData = tableData.search(inputValue);
       var filteredData = tableData.filter(job => 
         // job.City.indexOf(inputValue) !== -1)
-        regex.test(job.Title||job.Company||job.City||job.State||job.Designation))
+        regex.test(job.Title||job.Company||job.City||job.State||job.Designation||job.Source)||
+        ((job.MaxSalary <= inputValue || job.MaxSalary > inputValue) && job.MaxSalary) 
+        ||((job.MinSalary <= inputValue || job.MinSalary > inputValue) && job.MinSalary) 
+        || ((job.AvgSalary <= inputValue || job.AvgSalary > inputValue) && job.AvgSalary))
       console.log(filteredData.length)
-
-      var resultsbox = d3.select()
+      
+      
       // window.alert(""+filteredData.length+"jobs!")
         // || job.City === inputValue || job.Designation === inputValue
     //  || job.State === inputValue );
@@ -95,9 +98,12 @@ function BuildTable(){
       thead = table.append('thead')
       thead.append('p').text('No Results Try Again !') }
       else{
-  
+        d3.event.preventDefault();
+        var table = d3.select("#mytable").append('table'),
+        thead = table.append('thead')
+        thead.append('p').text('There are '+filteredData.length+''+' possible jobs meeting your search.' )
       var data_ = tabulate(filteredData,
-      ['City','State','Company','Designation','Title']);
+      ['Designation','Company','AvgSalary','MinSalary','MaxSalary','City','State','Source','Title']);
       }
   })
   })

@@ -98,6 +98,7 @@ body {
   background: aliceblue;
 } */ */
 table.myTable {
+  table-layout: auto;
   border: 1px solid #1C6EA4;
   background-color: #FFFFFF;
   width: 100%;
@@ -117,7 +118,7 @@ table.myTable thead {
   background: -moz-linear-gradient(top, #ffffff 0%, #ffffff 66%, #FFFFFF 100%);
   background: -webkit-linear-gradient(top, #ffffff 0%, #ffffff 66%, #FFFFFF 100%);
   background: linear-gradient(to bottom, #ffffff 0%, #ffffff 66%, #FFFFFF 100%);
-  border-bottom: 2px solid #444444;
+  /* border-bottom: 2px solid #444444; */
 }
 table.myTable thead th {
   font-size: 15px;
