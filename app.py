@@ -3,6 +3,7 @@ from flask import (
     render_template,
     jsonify,
     request)
+import json
 # Import pymongo library, to connect Flask app to our Mongo database.
 import pymongo
 import pandas as pd
@@ -30,16 +31,17 @@ def index():
 @app.route('/jobs')
 def jobs():
     """ Return list of jobs"""
-    jobs_data = list(db.job_listings.find())
+    jobs_data = list(db.jobs_listings.find())
     df = pd.DataFrame(jobs_data)
     df = df.drop(['_id'], axis=1)
+    df = df.loc[df["City"] != 'United States'].head(10)
     json_data = df.to_json(orient='records')
     # Return the jobs list (in json format)
     return json_data
 
 # Set route for number of jobs by State
-@app.route('/state')
-def state():
+@app.route('/piechart')
+def pie_chart():
     """ Return list of jobs"""
     jobs_data = list(db.jobs_glassdoor.find())
     df = pd.DataFrame(jobs_data)
@@ -56,18 +58,48 @@ def state():
     # Return the jobs list (in json format)
     return json_states_jobs
 
-# Set route for number of jobs by State
-@app.route('/company')
-def company():
+# Set route for number of jobs by City in the State chosen
+@app.route("/donutchart/<State>")
+def donut_chart(State):
     """ Return list of jobs"""
     jobs_data = list(db.jobs_glassdoor.find())
     df = pd.DataFrame(jobs_data)
     df = df.drop(['_id'], axis=1)
     df = df.drop_duplicates(keep = 'first')
-    
+    if (State !='All'):
+        df = df.loc[df["State"] == State]
+
+    grp_city_df = df.groupby('City')
+    jobs_city_df = grp_city_df[["City"]].count()
+    jobs_city_df = jobs_city_df.rename(
+        columns = {"City": "Jobs_Count"}
+        ).sort_values(by='Jobs_Count', ascending=False).reset_index()
+    json_cities_jobs = jobs_city_df.to_json(orient='records')
+
+    return json_cities_jobs
+
+# Set route for number of jobs by Company
+@app.route('/company/<choice>')
+def company(choice):
+    """ Return list of jobs"""
+    jobs_data = list(db.jobs_glassdoor.find())
+    df = pd.DataFrame(jobs_data)
+    df = df.drop(['_id'], axis=1)
+    df = df.drop_duplicates(keep = 'first')   
+
     grp_company_df = df.groupby('Company')
-    jobs_company_df = grp_company_df[["Company"]].count()
-    jobs_company_df = jobs_company_df.rename(columns = {"Company": "Jobs_Count"}).sort_values(by='Jobs_Count', ascending=False).reset_index()
+
+    if (choice == "Jobs"):
+        field = "Jobs_Count"
+        jobs_company_df = grp_company_df[["Company"]].count()
+        jobs_company_df = jobs_company_df.rename(columns = {"Company": "Value"}).sort_values(by='Value', ascending=False).reset_index()
+
+    else:
+        field = "Avg Salary" 
+        jobs_company_df = grp_company_df[['Avg Salary']].mean()
+        jobs_company_df = jobs_company_df.rename(columns = {"Avg Salary": "Value"}).sort_values(by= 'Value', ascending=False).reset_index()
+
+
     json_company_jobs = jobs_company_df.to_json(orient='records')
     # Return the jobs list (in json format)
     return json_company_jobs

@@ -70,9 +70,11 @@ body {
   height: 22px;
 }
 
-#pie {
-  animation-duration: 0.01s;
+canvas {
+  background-color: white;
+  padding: 20px;
 }
+
 /* media queries which will only be activated at specific screen sizes */
 @media (max-width: 800px) {
 
