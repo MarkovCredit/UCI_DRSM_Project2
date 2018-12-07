@@ -20,7 +20,7 @@ body {
   padding: 5px;
   margin: 0;
 }
-
+/* 
 /* input placeholder color changes */
 .form-control::-webkit-input-placeholder {
   /* Chrome/Opera/Safari */
@@ -72,7 +72,7 @@ body {
   height: 22px;
 }
 
-#table-area th {
+/* #table-area th {
   text-align: center;
 }
 
@@ -96,6 +96,47 @@ body {
   margin-top: 20px;
   content: " ";
   background: aliceblue;
+} */ */
+table.myTable {
+  border: 1px solid #1C6EA4;
+  background-color: #FFFFFF;
+  width: 100%;
+  height: 200%;
+  text-align: left;
+  border-collapse: collapse;
+}
+table.myTable td, table.myTable th {
+  border: 1px solid #E9E9E9;
+  padding: 3px 2px;
+}
+table.myTable tbody td {
+  font-size: 13px;
+}
+table.myTable thead {
+  background: #FFFFFF;
+  background: -moz-linear-gradient(top, #ffffff 0%, #ffffff 66%, #FFFFFF 100%);
+  background: -webkit-linear-gradient(top, #ffffff 0%, #ffffff 66%, #FFFFFF 100%);
+  background: linear-gradient(to bottom, #ffffff 0%, #ffffff 66%, #FFFFFF 100%);
+  border-bottom: 2px solid #444444;
+}
+table.myTable thead th {
+  font-size: 15px;
+  font-weight: bold;
+  color: #040404;
+  text-align: center;
+}
+table.myTable tfoot {
+  font-size: 14px;
+  font-weight: bold;
+  color: #040404;
+  background: #FFFFFF;
+  background: -moz-linear-gradient(top, #ffffff 0%, #ffffff 66%, #FFFFFF 100%);
+  background: -webkit-linear-gradient(top, #ffffff 0%, #ffffff 66%, #FFFFFF 100%);
+  background: linear-gradient(to bottom, #ffffff 0%, #ffffff 66%, #FFFFFF 100%);
+  border-top: 2px solid #444444;
+}
+table.myTable tfoot td {
+  font-size: 14px;
 }
 /* 
 

@@ -34,15 +34,17 @@ function BuildTable(){
       var filteredData = tableData.filter(job => 
         // job.City.indexOf(inputValue) !== -1)
         regex.test(job.Title||job.Company||job.City||job.State||job.Designation))
-        
-        
+      console.log(filteredData.length)
+
+      var resultsbox = d3.select()
+      // window.alert(""+filteredData.length+"jobs!")
         // || job.City === inputValue || job.Designation === inputValue
     //  || job.State === inputValue );
       
 
       // res = JSON.search(tableData,'//Company')
   
-      console.log(filteredData);
+      // console.log(filteredData);
       //in this function, data and columns are recognized
       //by d3/js 
       function tabulate(data, columns){
@@ -50,7 +52,7 @@ function BuildTable(){
           var table = d3.select("#mytable").append('table'),
           thead = table.append('thead'),
           tbody = table.append('tbody');
-  
+          
           thead.append('tr')
           .selectAll('th')
           .data(columns)
@@ -87,11 +89,11 @@ function BuildTable(){
       //if filtered data is an empty list, tell the user no results
       //and print to console no results. other wise, call our
       //tabulate data function with the following columns
-      if(filteredData.length === 0){console.log('noresults');
+      if(inputValue === ""|| filteredData.length ===0){console.log('noresults');
       d3.event.preventDefault();
       var table = d3.select("#mytable").append('table'),
       thead = table.append('thead')
-      thead.append('p').text('No Results Try Again') }
+      thead.append('p').text('No Results Try Again !') }
       else{
   
       var data_ = tabulate(filteredData,
@@ -108,7 +110,7 @@ function BuildTable(){
     // meta.html("");
     // Use the list of sample names to populate the select options
     d3.json("/jobs").then(function(json_data) { 
-      console.log(json_data);
+      // console.log(json_data);
       
   
       
