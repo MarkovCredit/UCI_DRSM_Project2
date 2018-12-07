@@ -38,6 +38,7 @@ function BuildTable(){
         // ||((job['Min Salary'] <= inputValue || job['Min Salary'] > inputValue) && job['Min Salary']) 
         (job.AvgSalary - inputValue <= 10 && job.AvgSalary - inputValue >= -10) && job.AvgSalary)
       console.log(filteredData.length)
+      console.log(filteredData)
       
       
       // window.alert(""+filteredData.length+"jobs!")
@@ -103,7 +104,7 @@ function BuildTable(){
         thead = table.append('thead')
         thead.append('p').text('There are '+filteredData.length+''+' possible jobs meeting your search.' )
       var data_ = tabulate(filteredData,
-      ['Designation','Company','AvgSalary','Min Salary','Max Salary','City','State','Source','Title']);
+      ['Designation','Company','AvgSalary','MinSalary','MaxSalary','City','State','Source','Title']);
       }
   })
   })

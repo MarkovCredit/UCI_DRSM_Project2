@@ -3,18 +3,24 @@ library(languageR)
 library(data.table)
 
 #read in data
-ds_data <- read.csv(file = file.choose())
+jobs_data <- read.csv(file = file.choose())
 zip_data <- read.csv(file=file.choose())
 
 
 #create a variable to join our data with geospatial data. best match is to use
 #city state since zips arent reliable/missing
-ds_data$citystate <- paste(ds_data$city,ds_data$state, sep = ",")
-zip_data$citystate <- paste(zip_data$city_ascii,zip_data$state_id,sep = ",")
+jobs_data$citystate <- paste(jobs_data$City,jobs_data$State, sep = ",")
 
-data_combined <- dplyr::left_join(ds_data,zip_data,"citystate")
-data_combined <- select(data_combined,position,company,description,reviews,
-                        city.x,state,lat,lng)
+zip_data$citystate <- paste(zip_data$city_ascii,zip_data$state_id,sep = ",")
+zip_data$CItyState <- NULL
+
+data_combined <- dplyr::left_join(jobs_data,zip_data,"citystate")
+data_combined <- dplyr::select(data_combined,AvgSalary, City, Company, Designation,lat,lng,
+                        Max.Salary,Min.Salary,Source,State,Title)
+summary(data_combined)
+data_combined$Source <- dplyr::if_else(data_combined$Source != 'Glassdoor','Indeed','Glassdoor')
+data_combined$Title <- dplyr::if_else(is.na(data_combined$Title) ,'Indeed','Glassdoor')
+data_combined$Source <- as.factor(data_combined$Source)
 
 data_combined$position <- tolower(data_combined$position)
 data_combined$position_cat <- as.factor(ifelse(data_combined$position %like% 'manager','Data Manager',
@@ -34,5 +40,7 @@ data_combined$position_cat <- as.factor(ifelse(data_combined$position %like% 'ma
                                       ifelse(data_combined$position %like% 'admin','Data Admin',
                                       ifelse(data_combined$position %like% 'stat','Statistician','Other'))))))))))))))))
 summary(data_combined$position_cat)
+
+summary(data_combined)
 #write to csv
 write.csv(data_combined,'data_jobs.csv')

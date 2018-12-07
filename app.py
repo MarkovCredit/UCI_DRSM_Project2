@@ -24,7 +24,7 @@ db = client.jobs_db
 def index():
     # Store the job listings collection in a list
     # Return the template with the jobs list passed in
-    return render_template('index_landing.html')
+    return render_template('index_ml.html')
 
 # Set route
 @app.route('/jobs')
@@ -41,7 +41,7 @@ def jobs():
 
 @app.route('/table')
 def landing():
-     return render_template('index.html')
+     return render_template('index_table.html')
 
 
 @app.route('/map')
