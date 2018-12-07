@@ -34,9 +34,9 @@ function BuildTable(){
       var filteredData = tableData.filter(job => 
         // job.City.indexOf(inputValue) !== -1)
         regex.test(job.Title||job.Company||job.City||job.State||job.Designation||job.Source)||
-        ((job.MaxSalary <= inputValue || job.MaxSalary > inputValue) && job.MaxSalary) 
-        ||((job.MinSalary <= inputValue || job.MinSalary > inputValue) && job.MinSalary) 
-        || ((job.AvgSalary <= inputValue || job.AvgSalary > inputValue) && job.AvgSalary))
+        // ((job['Max Salary'] <= inputValue || job['Max Salary'] > inputValue) && job['Max Salary']) 
+        // ||((job['Min Salary'] <= inputValue || job['Min Salary'] > inputValue) && job['Min Salary']) 
+        (job.AvgSalary - inputValue <= 10 && job.AvgSalary - inputValue >= -10) && job.AvgSalary)
       console.log(filteredData.length)
       
       
@@ -103,7 +103,7 @@ function BuildTable(){
         thead = table.append('thead')
         thead.append('p').text('There are '+filteredData.length+''+' possible jobs meeting your search.' )
       var data_ = tabulate(filteredData,
-      ['Designation','Company','AvgSalary','MinSalary','MaxSalary','City','State','Source','Title']);
+      ['Designation','Company','AvgSalary','Min Salary','Max Salary','City','State','Source','Title']);
       }
   })
   })
