@@ -3,6 +3,7 @@ from flask import (
     render_template,
     jsonify,
     request)
+import json
 # Import pymongo library, to connect Flask app to our Mongo database.
 import pymongo
 import pandas as pd
@@ -24,39 +25,25 @@ db = client.jobs_db
 def index():
     # Store the job listings collection in a list
     # Return the template with the jobs list passed in
-    return render_template('index_ml.html')
+    return render_template('index.html')
 
 # Set route
 @app.route('/jobs')
 def jobs():
     """ Return list of jobs"""
-    jobs_list = {}
-    jobs_data = list(db.job_listings.find())
+    jobs_data = list(db.jobs_listings.find())
     df = pd.DataFrame(jobs_data)
     df = df.drop(['_id'], axis=1)
+    df = df.loc[df["City"] != 'United States'].head(10)
     json_data = df.to_json(orient='records')
-    # Return the jobs list (it is already in json format)
+    # Return the jobs list (in json format)
     return json_data
 
-
-@app.route('/table')
-def landing():
-     return render_template('index_table.html')
-
-
-@app.route('/map')
-def map():
-     return render_template('index_map_sicong.html')
-
-
-@app.route('/charts')
-def charts():
-     return render_template('index_graphs.html')
-
+# Set route for number of jobs by State
 @app.route('/piechart')
 def pie_chart():
     """ Return list of jobs"""
-    jobs_data = list(db.job_listings.find())
+    jobs_data = list(db.jobs_glassdoor.find())
     df = pd.DataFrame(jobs_data)
     df = df.drop(['_id'], axis=1)
     df = df.drop_duplicates(keep = 'first')
@@ -75,7 +62,7 @@ def pie_chart():
 @app.route("/donutchart/<State>")
 def donut_chart(State):
     """ Return list of jobs"""
-    jobs_data = list(db.job_listings.find())
+    jobs_data = list(db.jobs_glassdoor.find())
     df = pd.DataFrame(jobs_data)
     df = df.drop(['_id'], axis=1)
     df = df.drop_duplicates(keep = 'first')
@@ -95,7 +82,7 @@ def donut_chart(State):
 @app.route('/company/<choice>')
 def company(choice):
     """ Return list of jobs"""
-    jobs_data = list(db.job_listings.find())
+    jobs_data = list(db.jobs_glassdoor.find())
     df = pd.DataFrame(jobs_data)
     df = df.drop(['_id'], axis=1)
     df = df.drop_duplicates(keep = 'first')   
@@ -116,5 +103,6 @@ def company(choice):
     json_company_jobs = jobs_company_df.to_json(orient='records')
     # Return the jobs list (in json format)
     return json_company_jobs
+
 if __name__ == "__main__":
     app.run(debug=True)
