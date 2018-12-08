@@ -136,11 +136,15 @@ function buildBarChart(choice) {
 
     console.log(companyData);
 
-    // var color_list = [];
+    if(choice == "Jobs") {
+      var title_text = "Companies with maximum Jobs openings for Data Analysts";
+      var xaxis_text = "No. of Jobs";
+    }
+    else {
+      var title_text = "Companies with highest pay for Data Analysts";
+      var xaxis_text = "Avg Salary ($(K))";
 
-    // companyData.forEach(row => {
-    //   color_list.push(colors[row.index]);
-    // });
+    }
       var trace1 = {
         y: companyData.map(row => row.Company),
         x: companyData.map(row => row.Value),
@@ -156,7 +160,7 @@ function buildBarChart(choice) {
       var data = [trace1]; 
       // Define the plot layout
       var layout = {
-        title: "Companies with maximum Data Analytics Jobs postings",
+        title: title_text,
         margin: {
           l: 350,
           r: 50,
@@ -164,7 +168,7 @@ function buildBarChart(choice) {
           b: 50,
           pad: 5
         },
-        xaxis: { title: "No. of Jobs / Avg Salary",
+        xaxis: { title: xaxis_text,
         titlefont: {
             size: 18
             },
@@ -191,6 +195,7 @@ function buildBarChart(choice) {
 }
 
 function init() {
+  // pie and donut charts for job count by State and City 
   d3.json("/piechart").then((data) => {
     buildPieChart(data);
     firstState = data[0].State;
@@ -199,16 +204,17 @@ function init() {
     buildDonutChart("All");
   });
 
-  choice = ["Jobs", "Salary"];
+  // Bar chart for top companies
+  choice = [["Jobs", "Companies with most jobs"], ["Salary", "Companies offering highest salaries"]];
   var selector = d3.select("#selDataset");
   choice.forEach((item) => {
     selector
     .append("option")
-    .text(item)
-    .property("value", item)
+    .text(item[1])
+    .property("value", item[0])
   });
 
-  buildBarChart(choice[0]);
+  buildBarChart("Jobs");
 }
 
 function optionChanged(newView) {
