@@ -109,9 +109,10 @@ table.myTable {
 table.myTable td, table.myTable th {
   border: 1px solid #E9E9E9;
   padding: 3px 2px;
+  width: 90%;
 }
 table.myTable tbody td {
-  font-size: 13px;
+  font-size: 18px;
 }
 table.myTable thead {
   background: #FFFFFF;

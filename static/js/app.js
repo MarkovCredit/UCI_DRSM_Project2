@@ -104,7 +104,7 @@ function BuildTable(){
         thead = table.append('thead')
         thead.append('p').text('There are '+filteredData.length+''+' possible jobs meeting your search.' )
       var data_ = tabulate(filteredData,
-      ['Designation','Company','AvgSalary','MinSalary','MaxSalary','City','State','Source','Title']);
+      ['Company','Designation','AvgSalary','MinSalary','MaxSalary','City','State','Source']);
       }
   })
   })
